@@ -19,8 +19,8 @@ import MoreIcon from '@mui/icons-material/MoreVert'
 const messages = [
   {
     id: 1,
-    primary: 'Brunch this week?',
-    secondary: "I'll be in the neighbourhood this week. Let's grab a bite to eat",
+    primary: 'Juan Diego',
+    secondary: "Estare por el barrio esta semana. Vamos a comer algo?",
     person: '/static/images/avatar/5.jpg',
   },
   {
