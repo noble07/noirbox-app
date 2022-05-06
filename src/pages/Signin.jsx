@@ -66,7 +66,7 @@ const Signin = () => {
               required
               fullWidth
               name="birthday"
-              label="Cumpleaños"
+              label="Fecha de nacimiento"
               type="date"
               id="birthday"
               defaultValue="2017-05-24"
