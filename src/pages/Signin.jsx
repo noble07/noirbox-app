@@ -65,6 +65,19 @@ const Signin = () => {
               margin="normal"
               required
               fullWidth
+              name="birthday"
+              label="Fecha de nacimiento"
+              type="date"
+              id="birthday"
+              defaultValue="2017-05-24"
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
               name="password"
               label="Contraseña"
               type="password"
