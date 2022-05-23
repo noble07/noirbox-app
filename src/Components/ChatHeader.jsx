@@ -10,7 +10,8 @@ const ChatHeader = () => {
         height: '4rem',
         backgroundColor: '#1976d2',
         display: 'flex',
-        padding: '.5rem 1rem'
+        padding: '.5rem 1rem',
+        flex: '0 0 auto'
       }}
     >
       <div className="avatar-group">
