@@ -70,18 +70,6 @@ const SideBar = () => {
         <List sx={{ mb: 2 }} >
           {messages.map(({ id, primary, secondary, person }) => (
             <React.Fragment key={id}>
-              {id === 1 && (
-                <ListSubheader sx={{ bgcolor: 'background.paper' }}>
-                  Today
-                </ListSubheader>
-              )}
-
-              {id === 3 && (
-                <ListSubheader sx={{ bgcolor: 'background.paper' }}>
-                  Yesterday
-                </ListSubheader>
-              )}
-
               <ListItem button>
                 <ListItemAvatar>
                   <Avatar alt="Profile Picture" src={person} />
