@@ -15,8 +15,8 @@ const ChatHeader = () => {
       }}
     >
       <div className="avatar-group">
-        <Avatar>LI</Avatar>
-        <p>Lorem Ipsum</p>
+        <Avatar>JD</Avatar>
+        <p>Juan Diego</p>
       </div>
     </Box>
   )
