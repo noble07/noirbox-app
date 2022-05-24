@@ -39,7 +39,7 @@ const messages = [
   },
   {
     id: 5,
-    primary: "Peluqueria",
+    primary: "Restaurante",
     secondary: 'Listo, quedamos para el lunes a las 10am',
     person: '/static/images/avatar/4.jpg',
   },
