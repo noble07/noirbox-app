@@ -26,6 +26,9 @@ const messages = [
   {
     message: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Itaque, officia. 4'
   },
+  {
+    message: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Itaque, officia. 4'
+  },
 ]
 
 const ChatContent = () => {
