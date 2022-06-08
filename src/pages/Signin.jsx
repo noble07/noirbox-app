@@ -1,8 +1,10 @@
+import { Link as LinkRouter, useNavigate } from 'react-router-dom'
+
+import { useForm } from '../hooks/useForm'
+
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Checkbox from '@mui/material/Checkbox'
 import Link from '@mui/material/Link'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
@@ -10,18 +12,33 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 
-import { Link as LinkRouter, useNavigate } from "react-router-dom"
+import { singinValidation } from '../utils/validations'
+import { user } from '../db/gun-db'
 
 import Copyright from '../Components/Copyright'
 
 const Signin = () => {
 
   const navigate = useNavigate()
+  const { form, nickname, birthday, password, password2, handleChange } = useForm({
+    nickname: '',
+    birthday: '',
+    password: '',
+    password2: ''
+  })
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    navigate('/')
-  };
+    if (!singinValidation(form)) return
+
+    user.create(nickname, password, ({ err }) => {
+      if (err) {
+        alert(`GUN: ${err}`);
+      } else {
+        console.log('Logeado')
+      }
+    })
+  }
 
   return (
     <>
@@ -40,26 +57,18 @@ const Signin = () => {
           <Typography component="h1" variant="h5">
             Registrate
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
               fullWidth
-              id="user"
+              id="nickname"
               label="Usuario"
-              name="user"
-              autoComplete="user"
+              name="nickname"
+              autoComplete="nickname"
               autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email"
-              name="email"
-              autoComplete="email"
-              autoFocus
+              value={nickname}
+              onChange={handleChange}
             />
             <TextField
               margin="normal"
@@ -69,10 +78,11 @@ const Signin = () => {
               label="Fecha de nacimiento"
               type="date"
               id="birthday"
-              defaultValue="2017-05-24"
               InputLabelProps={{
                 shrink: true,
               }}
+              value={birthday}
+              onChange={handleChange}
             />
             <TextField
               margin="normal"
@@ -83,6 +93,8 @@ const Signin = () => {
               type="password"
               id="password"
               autoComplete="current-password"
+              value={password}
+              onChange={handleChange}
             />
             <TextField
               margin="normal"
@@ -93,6 +105,8 @@ const Signin = () => {
               type="password"
               id="password2"
               autoComplete="current-password"
+              value={password2}
+              onChange={handleChange}
             />
             <Button
               type="submit"

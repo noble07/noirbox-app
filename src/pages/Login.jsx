@@ -11,15 +11,27 @@ import Typography from '@mui/material/Typography'
 import { Link as LinkRouter, useNavigate } from "react-router-dom"
 
 import Copyright from '../Components/Copyright'
+import { useForm } from '../hooks/useForm'
+import { user } from '../db/gun-db'
 
 const Login = () => {
 
   const navigate = useNavigate()
+  const { form, nickname, password, handleChange } = useForm({
+    nickname: '',
+    password: ''
+  })
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault()
-    navigate('/')
-  };
+    // navigate('/')
+    console.log(form)
+
+    user.auth(nickname, password, ({ err }) => err ? alert(err) : console.log('logeado'));
+    // user.leave()
+
+    console.log(user.is)
+  }
 
   return (
     <>
@@ -43,11 +55,13 @@ const Login = () => {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email"
-              name="email"
-              autoComplete="email"
+              id="nickname"
+              label="Usuario"
+              name="nickname"
+              autoComplete="nickname"
               autoFocus
+              value={nickname}
+              onChange={handleChange}
             />
             <TextField
               margin="normal"
@@ -58,6 +72,8 @@ const Login = () => {
               type="password"
               id="password"
               autoComplete="current-password"
+              value={password}
+              onChange={handleChange}
             />
             <Button
               type="submit"
