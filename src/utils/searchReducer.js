@@ -33,6 +33,9 @@ const searchReducer = (state = '', action) => {
         ...state,
         user: `~@${action.payload}`
       }
+
+    case actions.logout:
+      return initState
   
     default:
       return state

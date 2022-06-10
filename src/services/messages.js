@@ -14,7 +14,9 @@ export const getMessages = async({idMessages}) => {
 }
 
 export const addMessage = async({idMessage, message}) => {
+  console.log(idMessage)
   const messages = await db.get('messages').get(idMessage)
+  console.log('addMessage[messages]', messages)
   const messagesArr = JSON.parse(messages)
   const currentUser = await user.get('alias')
 

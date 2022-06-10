@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 
 import { Link as LinkRouter, useNavigate } from 'react-router-dom'
 
@@ -18,10 +18,13 @@ import { singinValidation } from '../utils/validations'
 import { user } from '../db/gun-db'
 
 import Copyright from '../Components/Copyright'
+import { searchContext } from '../utils/searchContext'
+import { actions } from '../utils/actions'
 
 const Signin = () => {
 
   const navigate = useNavigate()
+  const {dispatch} = useContext(searchContext)
   const { form, nickname, birthday, password, password2, handleChange } = useForm({
     nickname: '',
     birthday: '',
@@ -41,7 +44,15 @@ const Signin = () => {
       if (err) {
         alert(`GUN: ${err}`);
       } else {
-        navigate('/login')
+        user.auth(nickname, password, ({ err }) =>
+        err 
+        ? alert(err) 
+        : dispatch({ 
+            type: actions.setUser,
+            payload: nickname
+          })
+        )
+        navigate('/')
       }
     })
   }

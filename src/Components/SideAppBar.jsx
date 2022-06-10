@@ -54,6 +54,9 @@ const SideAppBar = () => {
 
   const handleLogout = () => {
     user.leave()
+    dispatch({
+      type: actions.logout
+    })
     navigate('/login')
   }
 

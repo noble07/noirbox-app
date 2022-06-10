@@ -48,6 +48,7 @@ export const findUserChat = async({searchUser}) => {
       )
     )
 
+    console.log('chatExist', chatExist)
     
     if(!chatExist) {
       const idChat = createChat()
@@ -63,11 +64,12 @@ export const findUserChat = async({searchUser}) => {
       db.get('user').get(searchUser).put(JSON.stringify(chatsReceiver))
 
       const idMessages = await db.get('chat').get(idChat)
-      const messages = JSON.parse(await getMessages({idMessages}))
+      const messagesJson = await getMessages({idMessages})
+      const messagesArr = JSON.parse(messagesJson)
 
       return {
         idMessages,
-        messages
+        messages: messagesArr
       }
     }
   
@@ -93,9 +95,16 @@ export const findUserChat = async({searchUser}) => {
 
     // Agregar nuevo chat al usuario de la busqueda
     db.get('user').get(searchUser).put(JSON.stringify([{idChat}]))
-    console.log('llega')
 
-    return idChat
+    const idMessages = await db.get('chat').get(idChat)
+    const messagesJson = await getMessages({idMessages})
+    const messagesArr = JSON.parse(messagesJson)
+
+
+    return {
+      idMessages,
+      messages: messagesArr
+    }
   }
 }
 

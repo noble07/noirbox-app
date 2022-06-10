@@ -7,6 +7,7 @@ export const createChat = () => {
   const idMessages = createMessages()
 
   db.get('chat').get(idChat).put(idMessages)
+  console.log('createChat[idChat, idMessages]', idChat, idMessages)
 
   return idChat
 }

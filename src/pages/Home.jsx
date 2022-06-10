@@ -43,6 +43,7 @@ const Home = () => {
     findUserChat({searchUser}).then(res => {
       if (!res) return
       const { idMessages } = res
+      console.log('findUserChat', idMessages)
       dispatch({
         type: actions.setIdMessage,
         payload: idMessages
