@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+
 import { Link as LinkRouter, useNavigate } from 'react-router-dom'
 
 import { useForm } from '../hooks/useForm'
@@ -27,6 +29,10 @@ const Signin = () => {
     password2: ''
   })
 
+  useEffect(() => {
+    if(user.is) navigate('/')
+  }, [])
+
   const handleSubmit = (e) => {
     e.preventDefault()
     if (!singinValidation(form)) return
@@ -35,7 +41,7 @@ const Signin = () => {
       if (err) {
         alert(`GUN: ${err}`);
       } else {
-        console.log('Logeado')
+        navigate('/')
       }
     })
   }

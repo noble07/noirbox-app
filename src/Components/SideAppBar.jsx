@@ -3,60 +3,45 @@ import { useState } from 'react'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import IconButton from '@mui/material/IconButton'
-import SearchIcon from '@mui/icons-material/Search'
 import MoreIcon from '@mui/icons-material/MoreVert'
-import { Menu, MenuItem, Typography } from '@mui/material'
+import { Menu, MenuItem, TextField, Typography } from '@mui/material'
+import Autocomplete from '@mui/material/Autocomplete'
 import { useNavigate } from 'react-router-dom'
-import { styled, alpha } from '@mui/material/styles'
-import InputBase from '@mui/material/InputBase'
+import { styled } from '@mui/material/styles'
 import InboxIcon from '@mui/icons-material/Inbox';
 
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(1),
-    width: 'auto',
-  },
-  marginRight: 'auto'
-}));
+import { db, user } from '../db/gun-db'
+import { useContext } from 'react'
+import { searchContext } from '../utils/searchContext'
+import { actions } from '../utils/actions'
 
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      width: '12ch',
-      '&:focus': {
-        width: '20ch',
-      },
+const CssTextField = styled(TextField)({
+  '& label.Mui-focused': {
+    color: 'white',
+  },
+  '& .MuiInput-underline:after': {
+    borderBottomColor: 'white',
+  },
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      borderColor: 'white',
     },
+    '&:hover fieldset': {
+      borderColor: 'white',
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: 'white',
+    }
   },
-}));
+})
 
 const SideAppBar = () => {
 
+  const {dispatch} = useContext(searchContext)
   const [anchorEl, setAnchorEl] = useState(null)
+  const [searchResult, setSearchResult] = useState([])
+  const [value, setValue] = useState('')
+  const [inputValue, setInputValue] = useState('')
   const navigate = useNavigate()
 
   const handleMenu = (event) => {
@@ -68,14 +53,14 @@ const SideAppBar = () => {
   }
 
   const handleLogout = () => {
-    setAnchorEl(null)
+    user.leave()
     navigate('/login')
   }
 
   return (
     <AppBar position="relative" color="primary" sx={{ top: 0 }}>
       <Toolbar>
-        <InboxIcon  sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+        <InboxIcon  sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, alignItems: 'center' }} />
         <Typography
           variant="h6"
           noWrap
@@ -95,17 +80,48 @@ const SideAppBar = () => {
           NoirBox
         </Typography>
 
-        <Search>
-          <SearchIconWrapper>
-            <SearchIcon />
-          </SearchIconWrapper>
-          <StyledInputBase
-            placeholder="Search…"
-            inputProps={{ 'aria-label': 'search' }}
-          />
-        </Search>
+        <Autocomplete
+          freeSolo
+          options={searchResult.map((option) => option)}
+          sx={{ flex: '1 0 auto', color: 'white' }}
+          value={value}
+          onChange={(_, newValue) => {
+            console.log(newValue)
+            setValue(newValue)
+            dispatch({
+              type: actions.setSearch,
+              payload: newValue
+            })
+          }}
+          inputValue={inputValue}
+          onInputChange={async (_, newInputValue) => {
+            db.get(`~@${newInputValue}`)
+            .once(async(data, key)=>{
+              if (data) {
+                setSearchResult(result => !result.find(res => res === key) ? [key, ...result] : result)
+              }
+            })
+            setInputValue(newInputValue)
+          }}
+          renderInput={(params) => (
+            <CssTextField
+              size="small"
+              id="search"
+              name="search"
+              label="Search"
+              {...params}
+              sx={{
+                marginRight: '1rem'
+              }}
+              fullWidth
+              InputLabelProps={{
+                style: { color: 'white' }
+              }}
+            />
+          )}
+        />
 
-        <IconButton onClick={handleMenu} color="inherit">
+        <IconButton onClick={handleMenu} color="inherit" >
           <MoreIcon />
         </IconButton>
         <Menu

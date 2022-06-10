@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
@@ -22,15 +24,17 @@ const Login = () => {
     password: ''
   })
 
+  useEffect(() => {
+    if(user.is) navigate('/')
+  }, [])
+
   const handleSubmit = async(e) => {
     e.preventDefault()
-    // navigate('/')
+    navigate('/')
     console.log(form)
 
-    user.auth(nickname, password, ({ err }) => err ? alert(err) : console.log('logeado'));
-    // user.leave()
+    user.auth(nickname, password, ({ err }) => err ? alert(err) : console.log('logeado'))
 
-    console.log(user.is)
   }
 
   return (

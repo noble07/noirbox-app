@@ -1,5 +1,9 @@
-import { Box } from "@mui/system"
-import { Card, CardContent } from "@mui/material"
+import { useEffect } from 'react'
+
+import { db } from '../db/gun-db'
+
+import { Box } from '@mui/system'
+import { Card, CardContent } from '@mui/material'
 
 const messages = [
   {
@@ -31,7 +35,52 @@ const messages = [
   },
 ]
 
+/* const chat = {
+  user1: '~@juand',
+  user2: '~@juank',
+  messages: [
+    {
+      message: 'asdasd',
+      sender: '~@juand'
+    },
+    {
+      message: 'perro',
+      sender: '~@juank'
+    }
+  ]
+} */
+
+/* const messages = {
+  chatId: 'asdasd',
+  userId: 'asdasd'
+}
+
+const chat = {
+  usersId: [
+    '~@juand',
+    '~@juank'
+  ],
+  messagesId: ''
+}
+
+const user = [
+  {
+    alias: '~@juand'
+  },
+  {
+    alias: '~@juank'
+  }
+] */
+
 const ChatContent = () => {
+
+  useEffect(() => {
+    db.get('chat').get('usersIds').once(async (data, key) => {
+      console.log(data)
+    })
+  }, [])
+  
+
   return (
     <Box
       sx={{

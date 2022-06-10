@@ -1,10 +1,25 @@
+import { useEffect } from 'react'
+
+import { db } from '../db/gun-db'
+
 import { Grid } from '@mui/material'
 import ChatContent from '../Components/ChatContent'
 import ChatHeader from '../Components/ChatHeader'
 import ChatInput from '../Components/ChatInput'
 import SideBar from '../Components/SideBar'
+import { addChatToUser } from '../services/user'
+import { useState } from 'react'
+import { useContext } from 'react'
+import { searchContext } from '../utils/searchContext'
+
+const user = {
+  
+}
 
 const Home = () => {
+
+  const {search} = useContext(searchContext)
+
   return (
     <>
       <Grid container >
@@ -26,6 +41,7 @@ const Home = () => {
             maxHeight: '100vh'
           }}
         >
+          {search}
           <ChatHeader />
           <ChatContent />
           <ChatInput />
