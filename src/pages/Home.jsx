@@ -1,24 +1,60 @@
-import { useEffect } from 'react'
+import { useEffect, useContext, useState } from 'react'
 
-import { db } from '../db/gun-db'
+import { searchContext } from '../utils/searchContext'
 
 import { Grid } from '@mui/material'
 import ChatContent from '../Components/ChatContent'
 import ChatHeader from '../Components/ChatHeader'
 import ChatInput from '../Components/ChatInput'
 import SideBar from '../Components/SideBar'
-import { addChatToUser } from '../services/user'
-import { useState } from 'react'
-import { useContext } from 'react'
-import { searchContext } from '../utils/searchContext'
+import { findUserChat } from '../services/user'
+import { actions } from '../utils/actions'
+import { db, user } from '../db/gun-db'
 
-const user = {
-  
-}
 
 const Home = () => {
+  
+  const {search, dispatch} = useContext(searchContext)
+  const [listMessages, setListMessages] = useState([])
+  
+  const {searchUser, idMessage} = search
 
-  const {search} = useContext(searchContext)
+  useEffect(() => {
+    // Gun User
+    user.get('alias').once((data) => {
+      dispatch({
+        type: actions.setUser,
+        payload: data
+      })
+    })
+  }, [])
+  
+
+  useEffect(() => {
+    if (idMessage) {
+      db.get('messages').get(idMessage).on((data) => {
+        setListMessages(JSON.parse(data))
+      })
+    }
+  }, [idMessage, setListMessages])
+  
+
+  useEffect(() => {
+    findUserChat({searchUser}).then(res => {
+      if (!res) return
+      const { idMessages } = res
+      dispatch({
+        type: actions.setIdMessage,
+        payload: idMessages
+      })
+    })
+    // db.get('user').get('~@juanw').once(data => console.log('~@juanw', JSON.parse(data)))
+    /* db.get('user').get('~@juank').once(data => console.log('~@juank', data))
+    db.get('chat').get('642f17f5-3ac5-40a8-b052-150e051a20af').once(data => console.log('Messages', data))
+    db.get('messages').get('2f5a0f1d-aa28-42e9-a5e1-b0dbd6989cb1').once(data => console.log('Messages', data)) */
+
+  }, [searchUser, dispatch])
+    
 
   return (
     <>
@@ -41,9 +77,8 @@ const Home = () => {
             maxHeight: '100vh'
           }}
         >
-          {search}
           <ChatHeader />
-          <ChatContent />
+          <ChatContent messages={listMessages} />
           <ChatInput />
         </Grid>
       </Grid>

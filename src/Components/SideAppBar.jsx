@@ -86,7 +86,6 @@ const SideAppBar = () => {
           sx={{ flex: '1 0 auto', color: 'white' }}
           value={value}
           onChange={(_, newValue) => {
-            console.log(newValue)
             setValue(newValue)
             dispatch({
               type: actions.setSearch,

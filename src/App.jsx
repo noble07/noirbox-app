@@ -34,18 +34,14 @@ function App() {
   return (
     <ThemeProvider theme={darkTheme} >
       <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <searchContext.Provider value={{search, dispatch}}>
         <CssBaseline />
         <Routes>
           <Route path='/login' element={<Login />} />
           <Route path='/signin' element={<Signin />} />
-          <Route path='/' 
-            element={
-              <searchContext.Provider value={{search, dispatch}}>
-                <Home />
-              </searchContext.Provider>
-            }
-          />
+          <Route path='/' element={<Home />} />
         </Routes>
+        </searchContext.Provider>
       </LocalizationProvider>
     </ThemeProvider>
   )

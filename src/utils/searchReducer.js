@@ -1,10 +1,38 @@
 import { actions } from "./actions";
 
+const initState = {
+  searchUser: '',
+  idMessage: '',
+  messages: [],
+  user: ''
+}
+
 const searchReducer = (state = '', action) => {
 
   switch (action.type) {
     case actions.setSearch:
-      return action.payload
+    return {
+      ...state,
+      searchUser: action.payload
+    }
+
+    case actions.setIdMessage:
+      return {
+        ...state,
+        idMessage: action.payload
+      }
+
+    case actions.setIdMessage:
+      return {
+        ...state,
+        idMessage: action.payload
+      }
+    
+    case actions.setUser:
+      return {
+        ...state,
+        user: `~@${action.payload}`
+      }
   
     default:
       return state

@@ -3,6 +3,10 @@ import { Button, styled, TextField } from "@mui/material"
 import SendIcon from '@mui/icons-material/Send';
 
 import './ChatInput.css'
+import { useState } from "react";
+import { useContext } from "react";
+import { searchContext } from "../utils/searchContext";
+import { addMessage } from "../services/messages";
 
 const CssTextField = styled(TextField)({
   '& label.Mui-focused': {
@@ -34,6 +38,21 @@ const CssButton = styled(Button)({
 });
 
 const ChatInput = () => {
+  const {search} = useContext(searchContext)
+  const [message, setMessage] = useState('')
+
+  const {idMessage} = search
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    addMessage({
+      idMessage,
+      message
+    })
+    setMessage('')
+  }
+
   return (
     <Box
       sx={{
@@ -44,12 +63,16 @@ const ChatInput = () => {
         alignItems: 'center',
         padding: '.5rem 1rem',
       }}
+      component="form"
+      onSubmit={handleSubmit}
     >
       <CssTextField
         size="small"
         id="message"
         name="message"
         label="Escribe un mensaje aquí"
+        value={message}
+        onChange={({target}) => setMessage(target.value)}
         sx={{
           marginRight: '1rem'
         }}
@@ -59,7 +82,14 @@ const ChatInput = () => {
         }}
       />
 
-      <CssButton variant="outlined" color="secondary" size="large" endIcon={<SendIcon />} sx={{ maxHeight: '40px' }} >
+      <CssButton
+        variant="outlined"
+        color="secondary"
+        size="large"
+        endIcon={<SendIcon />}
+        sx={{ maxHeight: '40px' }}
+        type="submit"
+      >
         Enviar
       </CssButton>
 

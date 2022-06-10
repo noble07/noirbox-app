@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
@@ -15,10 +15,13 @@ import { Link as LinkRouter, useNavigate } from "react-router-dom"
 import Copyright from '../Components/Copyright'
 import { useForm } from '../hooks/useForm'
 import { user } from '../db/gun-db'
+import { searchContext } from '../utils/searchContext'
+import { actions } from '../utils/actions'
 
 const Login = () => {
 
   const navigate = useNavigate()
+  const {dispatch} = useContext(searchContext)
   const { form, nickname, password, handleChange } = useForm({
     nickname: '',
     password: ''
@@ -33,7 +36,14 @@ const Login = () => {
     navigate('/')
     console.log(form)
 
-    user.auth(nickname, password, ({ err }) => err ? alert(err) : console.log('logeado'))
+    user.auth(nickname, password, ({ err }) =>
+     err 
+     ? alert(err) 
+     : dispatch({ 
+        type: actions.setUser,
+        payload: nickname
+      })
+    )
 
   }
 

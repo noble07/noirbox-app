@@ -41,7 +41,7 @@ const Signin = () => {
       if (err) {
         alert(`GUN: ${err}`);
       } else {
-        navigate('/')
+        navigate('/login')
       }
     })
   }
