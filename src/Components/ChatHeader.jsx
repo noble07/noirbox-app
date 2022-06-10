@@ -1,8 +1,14 @@
 import { Avatar } from '@mui/material'
 import { Box } from '@mui/system'
+import { useContext } from 'react'
+import { searchContext } from '../utils/searchContext'
 import './ChatHeader.css'
 
 const ChatHeader = () => {
+  const {search} = useContext(searchContext)
+
+  const {searchUser} = search
+
   return (
     <Box
       sx={{
@@ -15,8 +21,8 @@ const ChatHeader = () => {
       }}
     >
       <div className="avatar-group">
-        <Avatar>JD</Avatar>
-        <p>Juan Diego</p>
+        <Avatar>{searchUser ? searchUser.split('@')[1].substring(0, 1) : ''}</Avatar>
+        <p>{searchUser}</p>
       </div>
     </Box>
   )

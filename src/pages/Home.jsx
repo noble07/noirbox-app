@@ -2,7 +2,7 @@ import { useEffect, useContext, useState } from 'react'
 
 import { searchContext } from '../utils/searchContext'
 
-import { Grid } from '@mui/material'
+import { Grid, Paper, Typography } from '@mui/material'
 import ChatContent from '../Components/ChatContent'
 import ChatHeader from '../Components/ChatHeader'
 import ChatInput from '../Components/ChatInput'
@@ -11,6 +11,7 @@ import { findUserChat } from '../services/user'
 import { actions } from '../utils/actions'
 import { db, user } from '../db/gun-db'
 
+import NoirBox from '../assets/img/noirbox.png'
 
 const Home = () => {
   
@@ -49,11 +50,6 @@ const Home = () => {
         payload: idMessages
       })
     })
-    // db.get('user').get('~@juanw').once(data => console.log('~@juanw', JSON.parse(data)))
-    /* db.get('user').get('~@juank').once(data => console.log('~@juank', data))
-    db.get('chat').get('642f17f5-3ac5-40a8-b052-150e051a20af').once(data => console.log('Messages', data))
-    db.get('messages').get('2f5a0f1d-aa28-42e9-a5e1-b0dbd6989cb1').once(data => console.log('Messages', data)) */
-
   }, [searchUser, dispatch])
     
 
@@ -75,12 +71,38 @@ const Home = () => {
           sx={{
             display: 'flex',
             flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
             maxHeight: '100vh'
           }}
         >
-          <ChatHeader />
-          <ChatContent messages={listMessages} />
-          <ChatInput />
+          {
+            (!idMessage)
+            ? (
+              <Paper
+                elevation={4}
+                sx={{
+                  margin: 10,
+                  padding: 2,
+                  textAlign: 'center'
+                }}
+              >
+                <img src={NoirBox} alt="Logo NoirBox" />
+                <Typography variant="body1" sx={{ marginTop: 2 }}>
+                  Ahora pudes enviar y recibir mensajes de una manera rápida y segura.
+                  <br />
+                  A través de nuestra red descentralizada.
+                </Typography>
+              </Paper>
+            )
+            : (
+              <>
+                <ChatHeader />
+                <ChatContent messages={listMessages} />
+                <ChatInput />
+              </>
+            ) 
+          }
         </Grid>
       </Grid>
     </>

@@ -11,7 +11,7 @@ import Avatar from '@mui/material/Avatar'
 import SideAppBar from './SideAppBar'
 
 
-const messages = [
+/* const messages = [
   {
     id: 1,
     primary: 'Juan Diego',
@@ -55,14 +55,14 @@ const messages = [
     person: '/static/images/avatar/1.jpg',
   },
 ];
-
+ */
 
 
 const SideBar = () => {
   return (
     <>
       <SideAppBar />
-      <Paper square sx={{ pb: '50px', overflow: 'auto' }} elevation={0} >
+     {/*  <Paper square sx={{ pb: '50px', overflow: 'auto' }} elevation={0} >
         <Typography variant="h5" gutterBottom component="div" sx={{ p: 2, pb: 0 }}>
           Inbox
         </Typography>
@@ -78,7 +78,7 @@ const SideBar = () => {
             </React.Fragment>
           ))}
         </List>
-      </Paper>
+      </Paper> */}
     </>
   )
 }

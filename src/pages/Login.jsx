@@ -33,18 +33,20 @@ const Login = () => {
 
   const handleSubmit = async(e) => {
     e.preventDefault()
-    navigate('/')
-    console.log(form)
-
-    user.auth(nickname, password, ({ err }) =>
-     err 
-     ? alert(err) 
-     : dispatch({ 
-        type: actions.setUser,
-        payload: nickname
-      })
+    user.auth(nickname, password, ({ err }) => {
+        if (err) {
+          alert(err)
+        } else {
+          dispatch({ 
+            type: actions.setUser,
+            payload: nickname
+          })
+          navigate('/')
+        }
+      }
     )
-
+    
+  
   }
 
   return (
